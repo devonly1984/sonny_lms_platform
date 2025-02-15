@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "shadadd": "npx shadcn@latest add"
   },
   "overrides": {
     "framer-motion": "12.4.2"
