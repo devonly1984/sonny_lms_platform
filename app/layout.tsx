@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { ReactNode } from "react";
-import { ClerkProvider } from '@clerk/nextjs'
+import DarkModeProvider from "@/components/providers/DarkModeProvider";
+
 
 export const metadata: Metadata = {
   title: "Sonny LMS platform",
@@ -15,11 +16,17 @@ const RootLayout = ({
   children: ReactNode;
 }>) => {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={` antialiased`}>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={` antialiased`}>
+        <DarkModeProvider
+          attribute="class"
+          disableTransitionOnChange
+          defaultTheme="dark"
+        >
+          {children}
+        </DarkModeProvider>
+      </body>
+    </html>
   );
-}
+};
 export default RootLayout;
