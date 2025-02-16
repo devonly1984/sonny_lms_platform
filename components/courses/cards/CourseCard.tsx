@@ -1,6 +1,7 @@
 import Loader from "@/components/shared/Loader";
 import { GCqueryResult } from "@/sanity.types"
 import { urlFor } from "@/sanity/lib/image";
+import { BookOpen } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -55,7 +56,30 @@ const CourseCard = ({ course, progress, href }: CourseCardProps) => {
             {course.description}
           </p>
           <div className="space-y-4 mt-auto">
-            
+            {course.instructor && (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  {course.instructor.photo ? (
+                    <div className="size-8 mr-2 relative">
+                      <Image
+                        src={urlFor(course.instructor.photo).url() || ""}
+                        alt={course.instructor.name || "Instructor"}
+                        fill
+                        className="rounded-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="size-8 mr-2 rounded-full bg-muted flex items-center justify-center">
+                      <Loader size="sm" />
+                    </div>
+                  )}
+                  <span className="text-sm text-muted-foreground">
+                    by {course.instructor.name}
+                  </span>
+                </div>
+                <BookOpen className="size-4 text-muted-foreground" />
+              </div>
+            )}
           </div>
         </div>
       </div>
