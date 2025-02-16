@@ -344,3 +344,92 @@ export type BlockContent = Array<{
 
 export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | LessonCompletion | Module | Lesson | Enrollment | Student | Course | Instructor | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Category | Slug | BlockContent;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: sanity/lib/courses/queries.ts
+// Variable: GCquery
+// Query: *[_type=="course"] {    ...,        "slug": slug.current,        "category": category->{...},        "instructor":instructor->{...}        }
+export type GCqueryResult = Array<{
+  _id: string;
+  _type: "course";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  price?: number;
+  slug: string | null;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category: {
+    _id: string;
+    _type: "category";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    name?: string;
+    slug?: Slug;
+    description?: string;
+    icon?: string;
+    color?: string;
+  } | null;
+  modules?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "module";
+  }>;
+  instructor: {
+    _id: string;
+    _type: "instructor";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    name?: string;
+    bio?: string;
+    photo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+  } | null;
+}>;
+
+// Source: sanity/lib/student/queries.ts
+// Variable: SBCquery
+// Query: *[_type=="student" && clerkId == $clerkId][0]
+export type SBCqueryResult = {
+  _id: string;
+  _type: "student";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  clerkId?: string;
+  imageUrl?: string;
+} | null;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "*[_type==\"course\"] {\n    ...,\n        \"slug\": slug.current,\n        \"category\": category->{...},\n        \"instructor\":instructor->{...}\n        }": GCqueryResult;
+    "*[_type==\"student\" && clerkId == $clerkId][0]": SBCqueryResult;
+  }
+}

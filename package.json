@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "shadadd": "npx shadcn@latest add"
+    "shadadd": "npx shadcn@latest add",
+    "typegen": "sanity schema extract && sanity typegen generate"
   },
   "overrides": {
     "framer-motion": "12.4.2"
@@ -16,10 +17,12 @@
     "@clerk/nextjs": "^6.11.3",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.2",
+    "@sanity/client": "^6.28.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.75.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "groq": "^3.75.1",
     "lucide-react": "^0.475.0",
     "next": "15.1.7",
     "next-sanity": "^9.8.57",

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/user/layout/Header";
+import { SanityLive } from "@/sanity/lib/live";
 
 const UserLayout = ({
   children,
@@ -13,6 +14,7 @@ const UserLayout = ({
         <Header />
         <main className="flex-1">{children}</main>
       </div>
+      <SanityLive />
     </ClerkProvider>
   );
 };
