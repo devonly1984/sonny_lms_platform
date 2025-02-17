@@ -62,7 +62,7 @@ const CourseCard = ({ course, progress, href }: CourseCardProps) => {
                   {course.instructor.photo ? (
                     <div className="size-8 mr-2 relative">
                       <Image
-                        src={urlFor(course.instructor.photo).url() || ""}
+                        src={""}
                         alt={course.instructor.name || "Instructor"}
                         fill
                         className="rounded-full object-cover"
