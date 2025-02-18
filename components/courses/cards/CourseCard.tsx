@@ -5,6 +5,7 @@ import { BookOpen } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
+import CourseProgess from "../CourseProgess";
 
 interface CourseCardProps {
   course: GCqueryResult[number];
@@ -79,6 +80,14 @@ const CourseCard = ({ course, progress, href }: CourseCardProps) => {
                 </div>
                 <BookOpen className="size-4 text-muted-foreground" />
               </div>
+            )}
+            {typeof progress === "number" && (
+              <CourseProgess
+                progress={progress}
+                variant="default"
+                size="sm"
+                label="Course Progress"
+              />
             )}
           </div>
         </div>
