@@ -7,5 +7,14 @@ export const config = {
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
     apiToken: process.env.SANITY_API_TOKEN,
+    adminApiToken: process.env.SANITY_API_ADMIN_TOKEN
+  },
+  stripe: {
+    baseUrl:
+      process.env.NODE_ENV === "production"
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : process.env.NEXT_PUBLIC_BASE_URL,
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    stripePublicKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },
 };

@@ -505,6 +505,100 @@ export type GetCourseBySlugQueryResult = {
     };
   } | null;
 } | null;
+// Variable: query
+// Query: *[_type=="course" && _id ==$id][0] {    ...,      "category":category->{...},    "instructor": instructor->{...},    "modules": modules[]->{...,    "lessons":lessons[]->{...}},        }
+export type QueryResult = {
+  _id: string;
+  _type: "course";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  price?: number;
+  slug?: Slug;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category: {
+    _id: string;
+    _type: "category";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    name?: string;
+    slug?: Slug;
+    description?: string;
+    icon?: string;
+    color?: string;
+  } | null;
+  modules: Array<{
+    _id: string;
+    _type: "module";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    title?: string;
+    lessons: Array<{
+      _id: string;
+      _type: "lesson";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      title?: string;
+      slug?: Slug;
+      description?: string;
+      videoUrl?: string;
+      loomUrl?: string;
+      content?: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+    }> | null;
+  }> | null;
+  instructor: {
+    _id: string;
+    _type: "instructor";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    name?: string;
+    bio?: string;
+    photo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+  } | null;
+} | null;
 
 // Source: sanity/lib/student/queries.ts
 // Variable: SBCquery
@@ -521,6 +615,33 @@ export type SBCqueryResult = {
   clerkId?: string;
   imageUrl?: string;
 } | null;
+// Variable: studentQuery
+// Query: *[_type=="student" && clerkId==$clerkId][0]._id
+export type StudentQueryResult = string | null;
+// Variable: enrollmentQuery
+// Query: *[_type=="enrollment" && student._ref==$studentId && course._ref == $courseId][0]
+export type EnrollmentQueryResult = {
+  _id: string;
+  _type: "enrollment";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  student?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "student";
+  };
+  course?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "course";
+  };
+  amount?: number;
+  paymentId?: string;
+  enrolledAt?: string;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -529,6 +650,9 @@ declare module "@sanity/client" {
     "*[_type==\"course\"] {\n    ...,\n        \"slug\": slug.current,\n        \"category\": category->{...},\n        \"instructor\":instructor->{...}\n        }": GCqueryResult;
     "*[_type==\"courses\" && (title match $query + \"*\" || \n    description match $query + \"*\"||\n    category->name match $query+\"*\")] \n    {\n    ...,\n    \"slug\":slug.current,\n    \"category\":category->{...},\n    \"instructor\":instructor->{...}\n    }": SearchQueryResult;
     "*[_type==\"course\" && slug.current==$slug][0]{\n    ...,\n    \"category\":category->{...},\n    \"instructor\": instructor->{...},\n    \"modules\": modules[]->{...,\n    \"lessons\":lessons[]->{...}},\n\n    }": GetCourseBySlugQueryResult;
+    "*[_type==\"course\" && _id ==$id][0] {\n    ...,\n      \"category\":category->{...},\n    \"instructor\": instructor->{...},\n    \"modules\": modules[]->{...,\n    \"lessons\":lessons[]->{...}},\n    \n    }": QueryResult;
     "*[_type==\"student\" && clerkId == $clerkId][0]": SBCqueryResult;
+    "*[_type==\"student\" && clerkId==$clerkId][0]._id": StudentQueryResult;
+    "*[_type==\"enrollment\" && student._ref==$studentId && course._ref == $courseId][0]": EnrollmentQueryResult;
   }
 }

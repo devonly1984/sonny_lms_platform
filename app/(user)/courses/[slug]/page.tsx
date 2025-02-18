@@ -1,8 +1,8 @@
 import EnrollButton from "@/components/courses/buttons/EnrollButton";
-import { getCourseBySlug } from "@/sanity/lib/courses/queries";
+import { getCourseBySlug, isEnrolledInCourse } from "@/sanity/lib/courses/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, BookOpen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -71,6 +71,52 @@ const CoursePage = async ({ params }: CousePageProps) => {
           </div>
         </div>
       </div>
+      {/**Content Section */}
+      <section className="container mx-auto px-4 py-12">
+        <article className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/**Main Content */}
+          <section className="lg:col-span-2">
+            <div className="bg-card rounded-lg p-6 mb-8 border border-border">
+              <h2 className="text-2xl font-bold mb-4">Course Content</h2>
+              <div className="space-y-4">
+                {course.modules?.map((module, index) => (
+                  <div
+                    className="border border-border rounded-lg"
+                    key={module._id}
+                  >
+                    <div className="p-4 border-b border-border">
+                      <h3 className="font-medium">
+                        Module {index + 1}: {module.title}
+                      </h3>
+                    </div>
+                    <div className="divide-y divide-border">
+                      {module.lessons?.map((lesson, lessonIndex) => (
+                        <div
+                          className="p-4 hover:bg-muted/50 transition-colors"
+                          key={lesson._id}
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="flex-shrink-0 size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium">
+                              {lessonIndex + 1}
+                            </div>
+                            <div className="flex items-center gap-3 text-foreground">
+                              <BookOpen className="size-4 text-muted-foreground" />
+                              <span className="font-medium">
+                                {lesson.title}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+          {/**Sidebar */}
+        </article>
+      </section>
     </div>
   );
 };
