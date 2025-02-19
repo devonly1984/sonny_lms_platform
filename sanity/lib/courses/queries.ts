@@ -1,6 +1,9 @@
 import { sanityFetch } from "../live";
 import { defineQuery } from "groq";
 import { adminClient } from "../adminClient";
+import { getStudentByClerkId } from "../student/queries";
+import { Module } from "@/sanity.types";
+import { calculateCourseProgress } from "@/lib/utils";
 export const getCourses = async () => {
   const GCquery = defineQuery(`*[_type=="course"] {
     ...,
@@ -88,4 +91,55 @@ export const createEnrollment = async ({
     amount,
     enrolledAt: new Date().toISOString(),
   });
+};
+export const getEnrolledCourses = async(clerkId:string)=>{
+  const getEnrolledCoursesQuery = defineQuery(`*[_type=="course" && clerkId==$clerkId][0]{
+    "enrolledCourses": *[_type=="enrollment" && student._ref==^.id] {
+    ...,
+    "course": course->{
+    ...,
+    "slug":slug.current,
+    "category":category->{...},
+    "instructor":instructor->{...}
+    }
+    }
+    }`)
+    const result = await sanityFetch({
+      query: getEnrolledCoursesQuery,
+      params: {clerkId}
+    })
+    return result?.data?.enrolledCourses ||[]
+}
+export const getCourseProgress = async (clerkId: string, courseId: string) => {
+    const student = await getStudentByClerkId(clerkId);
+    if (!student) {
+      throw new Error("Student not found")
+    }
+    const progressQuery = defineQuery(`{
+      "completedLessons": *[_type == "lessonCompletion" && student._ref == $studentId && course._ref == $courseId] {
+      ...,
+      "lesson": lesson->{...},
+      "module":module->{...}
+      },
+      "course": *[_type == "course" && _id == $courseId][0] {
+      ...,
+      "modules":modules[]-> {
+      ...,
+      "lessons":lessons[]->{...}
+      }
+    }
+  }`);
+    const result = await sanityFetch({
+      query: progressQuery,
+      params: { studentId: student._id, courseId },
+    });    
+    const {completedLessons=[],course}=result.data;
+    const courseProgress = calculateCourseProgress(
+      (course?.modules as unknown as Module[]) || null,
+      completedLessons
+    );
+    return {
+      completedLessons,
+      courseProgress
+    }
 };

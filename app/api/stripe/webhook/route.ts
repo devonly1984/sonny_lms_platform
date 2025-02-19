@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import {getStudentByClerkId,} from '@/sanity/lib/student/queries'
 import { createEnrollment } from "@/sanity/lib/courses/queries";
 import { config } from "@/lib/config";
-import stripe from "@/lib/utils";
+import { stripe } from "@/lib/utils";
 
 export async function POST(req: Request) {
   try {
