@@ -16,5 +16,6 @@ export const config = {
         : process.env.NEXT_PUBLIC_BASE_URL,
     stripeSecretKey: process.env.STRIPE_SECRET_KEY,
     stripePublicKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET
   },
 };

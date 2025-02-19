@@ -1,6 +1,6 @@
 import { defineQuery } from "groq";
 import { sanityFetch } from "../live";
-import { client } from "../adminClient";
+import { adminClient } from "../adminClient";
 interface CreateStudentProps {
   clerkId: string;
   email: string;
@@ -55,13 +55,13 @@ if (existingQuery.data) {
     console.log("Student already exists",existingQuery.data);
     return existingQuery.data;
 }
-const newStudent = await client.create({
-    _type: "student",
-    clerkId,
-    email,
-    firstName,
-    lastName,
-    imageUrl
+const newStudent = await adminClient.create({
+  _type: "student",
+  clerkId,
+  email,
+  firstName,
+  lastName,
+  imageUrl,
 });
 console.log("New Student Created",newStudent)
 return newStudent;

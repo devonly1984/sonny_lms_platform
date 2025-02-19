@@ -1,5 +1,6 @@
 import EnrollButton from "@/components/courses/buttons/EnrollButton";
-import { getCourseBySlug, isEnrolledInCourse } from "@/sanity/lib/courses/queries";
+import { getCourseBySlug } from "@/sanity/lib/courses/queries";
+import { isEnrolledInCourse } from "@/sanity/lib/student/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { auth } from "@clerk/nextjs/server";
 import { ArrowLeft, BookOpen } from "lucide-react";

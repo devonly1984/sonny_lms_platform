@@ -1,6 +1,6 @@
 import { sanityFetch } from "../live";
 import { defineQuery } from "groq";
-
+import { adminClient } from "../adminClient";
 export const getCourses = async () => {
   const GCquery = defineQuery(`*[_type=="course"] {
     ...,
@@ -61,4 +61,31 @@ export const getCourseById = async (id: string) => {
     params: { id },
   });
   return course.data;
+};
+interface CreateEnrollmentParams {
+  studentId: string;
+  courseId: string;
+  paymentId: string;
+  amount: number;
+}
+export const createEnrollment = async ({
+  studentId,
+  courseId,
+  paymentId,
+  amount,
+}: CreateEnrollmentParams) => {
+  return adminClient.create({
+    _type: "entrollment",
+    student: {
+      _type: "reference",
+      _ref: studentId,
+    },
+    course: {
+      _type: "reference",
+      _ref: courseId,
+    },
+    paymentId,
+    amount,
+    enrolledAt: new Date().toISOString(),
+  });
 };

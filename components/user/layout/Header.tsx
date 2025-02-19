@@ -1,10 +1,8 @@
-import DarkModeToggle from "@/components/shared/DarkModeToggle"
-import SearchInput from "@/components/shared/SearchInput";
+import { DarkModeToggle, SearchInput } from "@/components/shared/";
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { BookMarkedIcon, BookOpen } from "lucide-react";
 import Link from "next/link";
-
 
 const Header = () => {
   return (
@@ -53,6 +51,6 @@ const Header = () => {
       </section>
     </header>
   );
-}
+};
 
-export default Header
+export default Header;
